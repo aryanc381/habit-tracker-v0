@@ -1,11 +1,10 @@
+import HomePage from '@/components/elements/landing/Landing.tsx';
 import './App.css'
-import PageWow from "@/components/ui";
-
   function App() {
 
   return (
-    <div className='flex items-center justify-center mt-[10vw]'>
-     <PageWow />
+    <div>
+     <HomePage />
     </div>
   )
 }

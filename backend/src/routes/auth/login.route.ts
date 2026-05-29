@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
-import { zodValidator } from '../../lib/zodValidation';
+import { zodValidator } from '../../lib/zodValidation.js';
 import zod from 'zod';
-import { login } from '../../services/auth.service';
+import { login } from '../../services/auth.service.js';
 
 const router: Router = express.Router();
 

@@ -5,6 +5,7 @@ import { ColorPanels } from "@paper-design/shaders-react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { KineticText } from "@/components/ui/kinetic-text";
 
 const MemoizedColorPanels = React.memo(ColorPanels)
 
@@ -154,21 +155,15 @@ const defaultMobileShaderProps: Partial<ColorPanelsProps> = {
   style: { height: "100%", width: "100%" },
 }
 
-const defaultCtaProps: HeroColorPanelsCTAProps = {
-  label: "Check it out today ",
-  href: "https://aisdkagents.com",
-  target: "_blank",
-  rel: "noopener noreferrer",
-}
+
 
 const defaultDescription = (
-  <>
-    Full-stack vercel ai sdk patterns for workflows, tool calling, and agent
-    orchestration. Built with{" "}
-    <span className="font-medium tracking-tight">ai sdk v6</span> and{" "}
-    <span className="font-medium tracking-tight">shadcn/ui</span>.
-    <span className="hidden sm:inline"> Headless, themable, practical.</span>
-  </>
+  <div className="ml-[0.25vw] text-gray-400">
+    <p>This is my personal habit-tracker for weekly projections.</p>
+    <div className="">
+
+    </div>
+  </div>
 )
 
 const defaultTechStack: HeroColorPanelsTechItem[] = [
@@ -205,12 +200,9 @@ export function useHeroColorPanels() {
 export const HeroColorPanelsRoot = React.forwardRef<
   HTMLElement,
   HeroColorPanelsRootProps
->(({ className, children, srTitle = "AI SDK Agents", title = <span className="">
-      AI SDK Agents
-    </span>, subtitle = "Copy and Paste", description = defaultDescription, showCta = true, ctaProps, renderCta, showBadges = true, techStack = defaultTechStack, renderBadge, desktopShaderProps, mobileShaderProps, ...props }, ref) => {
+>(({ className, children, srTitle = "AI SDK Agents", title = <span className="text-[4vw]">Looking at personal growth as a business.</span>, subtitle = "", description = defaultDescription, showCta = true, ctaProps, renderCta, showBadges = true, techStack = defaultTechStack, renderBadge, desktopShaderProps, mobileShaderProps, ...props }, ref) => {
   const mergedCtaProps = React.useMemo(
     () => ({
-      ...defaultCtaProps,
       ...ctaProps,
     }),
     [ctaProps]
@@ -623,7 +615,7 @@ export function AISDKIcon(props: SVGProps<SVGSVGElement>) {
       width="1em"
       {...props}
     >
-      <title>AI SDK</title>
+      <title>Tracking personal progress like it's a business</title>
       <path
         d="M2.5.5V0h1v.5a2 2 0 002 2H6v1h-.5a2 2 0 00-2 2V6h-1v-.5a2 2 0 00-2-2H0v-1h.5a2 2 0 002-2zM14.5 4.5V5h-1v-.5a1 1 0 00-1-1H12v-1h.5a1 1 0 001-1V1h1v.5a1 1 0 001 1h.5v1h-.5a1 1 0 00-1 1zM8.407 4.93L8.5 4h1l.093.93a5 5 0 004.478 4.477L15 9.5v1l-.93.093a5 5 0 00-4.477 4.478L9.5 16h-1l-.093-.93a5 5 0 00-4.478-4.477L3 10.5v-1l.93-.093A5 5 0 008.406 4.93z"
         fill="currentColor"

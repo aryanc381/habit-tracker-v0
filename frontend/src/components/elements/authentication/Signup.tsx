@@ -3,12 +3,18 @@ import { MagicCard } from "@/components/ui/magic-card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
+import { signup } from "@/services/auth.service";
 
 export function Signup() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+
+    const handleSignup = async() => {
+        const res = await signup(name, email, password);
+        console.log(res);
+    }  
 
     return (
         <div className="flex min-h-screen items-center justify-center">
@@ -28,7 +34,7 @@ export function Signup() {
                     </div>
                     <div className="flex justify-end mt-[2vw] gap-[0.5vw]">
                         <Button className="rounded-[0.1vw] p-[1vw] w-[5vw] cursor-pointer" onClick={() => {navigate(-1)}}>Back</Button>
-                        <Button className="rounded-[0.1vw] p-[1vw] w-[5vw] cursor-pointer" onClick={() => {}}>Signup</Button>
+                        <Button className="rounded-[0.1vw] p-[1vw] w-[5vw] cursor-pointer" onClick={() => {handleSignup()}}>Signup</Button>
                     </div>
                 </div>
             </MagicCard>

@@ -19,8 +19,8 @@ export interface HeroColorPanelsTechItem {
 }
 
 export interface HeroColorPanelsCTAProps {
-  label: React.ReactNode
-  href: string
+  label?: React.ReactNode
+  href?: string
   target?: React.HTMLAttributeAnchorTarget
   rel?: string
   onClick?: React.MouseEventHandler<HTMLAnchorElement>

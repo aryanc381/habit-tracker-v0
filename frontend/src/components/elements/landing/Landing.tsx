@@ -14,7 +14,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col items-center">
       <div className="absolute mt-[1vw] left-[1.25vw]">
-        <p className="cursor-pointer" onClick={() => {navigate('/')}}>Sadhana</p>
+        <p className="cursor-pointer" onClick={() => {navigate('/')}}>Sadhana V0</p>
       </div>
       <div className="absolute mt-[1vw] right-[1.25vw]">
         <div className="flex gap-[1.5vw] cursor-pointer">

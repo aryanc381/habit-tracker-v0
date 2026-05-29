@@ -19,12 +19,12 @@ router.post('/signup', async (req, res) => {
     try {
         // 1. zod validation.
         const zodValidation = await zodValidator(signUpBody, req.body);
-        if(zodValidation.status === 403) { return res.json({zodValidation}) }
+        if(zodValidation.status === 403) { return res.json(zodValidation) }
         // 2. destructuring keys from objects.
         const { email, password, fullName } = zodValidation.object as { email: string, password: string, fullName: string }
         // 3. signup-service that take cares of everything.
         const result = await signup({email, password, fullName});
-        return res.json({ result });
+        return res.json(result);
     } catch(err) {
         return res.json({ status: 500, msg: 'Internal server error.'});
     }

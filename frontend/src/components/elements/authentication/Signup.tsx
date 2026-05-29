@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 import { signup } from "@/services/auth.service";
+import { toast } from "sonner";
 
 export function Signup() {
     const [name, setName] = useState("");
@@ -12,8 +13,11 @@ export function Signup() {
     const navigate = useNavigate();
 
     const handleSignup = async() => {
-        const res = await signup(name, email, password);
-        console.log(res);
+        try {
+            const res = await signup(name, email, password);
+            if(res.status === 200) { toast.success(res.data.msg); navigate('/login'); }
+            else { toast.error(res.data.msg); }
+        } catch(err) { toast.error('Backend server is not running.'); }
     }  
 
     return (
@@ -34,7 +38,7 @@ export function Signup() {
                     </div>
                     <div className="flex justify-end mt-[2vw] gap-[0.5vw]">
                         <Button className="rounded-[0.1vw] p-[1vw] w-[5vw] cursor-pointer" onClick={() => {navigate(-1)}}>Back</Button>
-                        <Button className="rounded-[0.1vw] p-[1vw] w-[5vw] cursor-pointer" onClick={() => {handleSignup()}}>Signup</Button>
+                        <Button className="rounded-[0.1vw] p-[1vw] w-[5vw] cursor-pointer" onClick={() => {handleSignup();}}>Signup</Button>
                     </div>
                 </div>
             </MagicCard>

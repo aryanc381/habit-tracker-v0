@@ -17,7 +17,7 @@ interface loginInput {
 export async function signup(input: signUpInput) {
     // existing user present
     const existingUser = await User.findOne({email: input.email});
-    if(existingUser) { return { status: 409, msg: `Existing user ${input.fullName} is already present in database.`} }
+    if(existingUser) { return { status: 409, msg: `User ${input.fullName} is already present in database.`} }
 
     // hashed password
     const hashedPassword = await bcrypt.hash(input.password, Number(env.BCRYPT_SALT));

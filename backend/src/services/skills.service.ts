@@ -16,6 +16,10 @@ interface IGetSkill {
     goalId: string,
 }
 
+interface ISkillId {
+    id: string
+}
+
 // create a skill
 export async function createSkill(input: ICreateSkill) {
     const existingSkill = await Skills.findOne({ name: input.name, createdAt: Date.now() });
@@ -35,14 +39,12 @@ export async function deleteSkill(input: IDeleteSkill) {
 }
 
 // get skills for a specific goal
-export async function getSkill(input: IGetSkill) {
+export async function getSkillByGoalId(input: IGetSkill) {
     const goal = getGoalById({ id: toObjectId(input.goalId) });
     const skillIds = (await goal).goalObject?.skillIds;
     
     const skills = await Promise.all(
-        skillIds?.map((id) => getSkillById(id.toString())) ?? []
-    );
-
+        skillIds?.map((id) => getSkillById({ id: id.toString() })) ?? []);
     return { status: 200, msg: `Skills found for ${(await goal).goalObject?.name}.`, skills: skills }
 }
 
@@ -53,8 +55,8 @@ export async function getAllSkills() {
 }
 
 // get a skill by Ids
-export async function getSkillById(id: string) {
-    const skill = await Skills.findOne({ _id: toObjectId(id) });
+export async function getSkillById(input: ISkillId) {
+    const skill = await Skills.findOne({ _id: toObjectId(input.id) });
     if(!skill) { return { status: 404, msg: `Skill not found.`} }
 
     return { status: 200, msg: `Skill ${skill.name} found.` }

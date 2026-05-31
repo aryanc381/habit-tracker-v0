@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+  import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   HeroColorPanelsRoot,
   HeroColorPanelsContainer,
@@ -35,6 +36,19 @@ export default function HomePage() {
             <HeroColorPanelsMobileVisual />
           </HeroColorPanelsRoot>
         </main>
+      </div>
+      <div className="absolute bottom-[1vw] right-[1vw]">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <img src="/ban-ai.png" className="w-[2vw] h-[2vw]" />
+            </TooltipTrigger>
+            <TooltipContent side="left">
+              <p>No AI-generated code was used in this project.</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        
       </div>
     </div>
     

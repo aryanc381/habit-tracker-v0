@@ -28,9 +28,8 @@ export async function getGoalById(input: IGetGoal) {
 // get all the goal : {ids, names}
 export async function getAllGoals() {
     const ids = await Goals.find({}, {_id: 1, name: 1}).lean();
-    return { status: 200, goals: ids.map(doc => ({ id: doc._id, name: doc.name })) }
+  return { status: 200, goals: ids.map((doc) => ({ id: doc._id, name: doc.name })) }
 }
-
 // create a goal
 export async function createGoal(input: ICreateGoal) {
     const existingGoal = await Goals.findOne({ name: input.name });

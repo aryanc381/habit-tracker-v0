@@ -16,7 +16,7 @@ interface ILoginInput {
 
 export async function signup(input: ISignupInput) {
     // existing user present
-    const existingUser = await User.findOne({email: input.email});
+    const existingUser = await User.findOne({ email: input.email });
     if(existingUser) { return { status: 409, msg: `User ${input.fullName} is already present in database.`} }
 
     // hashed password

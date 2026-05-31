@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router';
 import { Signup } from './components/elements/authentication/Signup';
 import { Login } from './components/elements/authentication/Login';
 import { Toaster } from '@/components/ui/sonner';
+import { AppHome } from './components/elements/app-main/AppHome';
 
   function App() {
 
@@ -13,6 +14,7 @@ import { Toaster } from '@/components/ui/sonner';
         <Route path='/' element={<HomePage />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/app' element={<AppHome />} />
       </Routes>
       <Toaster />
     </>

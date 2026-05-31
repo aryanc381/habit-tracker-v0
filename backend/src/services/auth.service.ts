@@ -3,18 +3,18 @@ import { User } from "../db/models/user.models.js";
 import bcrypt from 'bcrypt';
 import { env } from "../env.js";
 
-interface signUpInput {
+interface ISignupInput {
     email: string,
     password: string,
     fullName: string
 }
 
-interface loginInput {
+interface ILoginInput {
     email: string,
     password: string
 }
 
-export async function signup(input: signUpInput) {
+export async function signup(input: ISignupInput) {
     // existing user present
     const existingUser = await User.findOne({email: input.email});
     if(existingUser) { return { status: 409, msg: `User ${input.fullName} is already present in database.`} }
@@ -26,7 +26,7 @@ export async function signup(input: signUpInput) {
     return { status: 200, msg: `User ${newUser.fullName} added in habit-tracker.` }
 }
 
-export async function login(input: loginInput) {
+export async function login(input: ILoginInput) {
     const existingUser = await User.findOne({ email: input.email });
     if(!existingUser) { return { status: 409, msg: `User ${input.email} does not exist.` }}
 

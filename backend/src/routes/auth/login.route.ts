@@ -17,7 +17,7 @@ router.get('/login/health', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         // 1. zod validation for login-body
-        const zodValidation = await zodValidator(loginBody, req);
+        const zodValidation = await zodValidator(loginBody, req.body);
         if(zodValidation.status === 403) return res.json(zodValidation);
         // 2. destructuring the req.body keys
         const { email, password } = zodValidation.object as { email: string, password: string };

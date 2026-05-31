@@ -13,4 +13,4 @@ app.use('/v0/api', rootRouter);
 
 app.get('/health', (req, res) => { return res.json({ status: 200, msg: 'Backend is live and healthy.'}) })
 
-app.listen(env.DEV_ENV, () => { console.log(`Backend is running at PORT ${env.DEV_ENV}.`) });
+app.listen(Number(env.DEV_ENV), () => { console.log(`Backend is running at PORT ${env.DEV_ENV}.`) });

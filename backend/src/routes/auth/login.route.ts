@@ -5,6 +5,8 @@ import { login } from '../../services/auth.service.js';
 
 const router: Router = express.Router();
 
+
+
 const loginBody = zod.object({
     email: zod.string(),
     password: zod.string()

@@ -1,7 +1,13 @@
-import { DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ExpandableScreen, ExpandableScreenTrigger, ExpandableScreenContent } from "@/components/ui/expandable-screen";
 import { Input } from "@/components/ui/input";
-import { DropdownMenu } from "radix-ui";
+import { CiCirclePlus } from "react-icons/ci";
+
+const skills = [
+    { id: 1, name: 'basketball', level: 'beginner' },
+    { id: 2, name: 'football', level: 'intermediate' }
+];
 
 export function NewGoal({ buttonName }: { buttonName: string }) {
     return(
@@ -24,12 +30,24 @@ export function NewGoal({ buttonName }: { buttonName: string }) {
                     <div className="mt-[1vw]">
                         <p className="mb-[0.25vw]">Skills</p>
                         <DropdownMenu>
-                            <DropdownMenuTrigger>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
+                            <DropdownMenuTrigger><Button className="border-gray-300 p-[1vw] rounded-[0vw]" >Add Skills</Button></DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-[40vw] rounded-[0.1vw] bg-white text-black border border-gray-300">
+                                <DropdownMenuItem className="focus:bg-transparent focus:text-inherit">
+                                    <div className="flex items-center gap-[0.25vw]">
+                                        <CiCirclePlus />
+                                        <p>New Skill</p>
+                                    </div>
+                                </DropdownMenuItem>
+                                {skills.map((skill) => (
+                                    <DropdownMenuItem className="focus:bg-transparent focus:text-inherit" key={skill.id}>
+                                        <div className="flex w-full justify-between items-center">
+                                            <p>{skill.name}</p>
+                                            <p className="pt-[0.2vw] pb-[0.2vw] pr-[0.5vw] pl-[0.5vw] bg-gray-900 border border-gray-600 w-[7vw] text-center text-white">{skill.level}</p>
+                                        </div>
+                                    </DropdownMenuItem> 
+                                ))}
                             </DropdownMenuContent>
                         </DropdownMenu>
-                        <Input className="border-gray-300 p-[1vw] rounded-[0vw]" placeholder="basketball-beginner" />
                     </div>
                 </div>
             </ExpandableScreenContent>

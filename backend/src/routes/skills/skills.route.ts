@@ -1,14 +1,15 @@
 import express, { Router } from 'express';
 import zod from 'zod';
-import { deleteSkill, getAllSkills, getSkillByGoalId, getSkillById } from '../../services/skills.service.js';
+import { createSkill, deleteSkill, getAllSkills, getSkillByGoalId, getSkillById } from '../../services/skills.service.js';
+import { zodValidator } from '../../lib/zodValidation.js';
 
 const router: Router = express.Router();
 
 const skillCreation = zod.object({
     name: zod.string(), 
     description: zod.string(),
-    level: zod.string()
-});
+    level: zod.enum(['beginner', 'intermediate', 'advanced'])
+}); 
 
 // GET - all the skills.
 router.get('/all', async(req, res) => {
@@ -48,6 +49,18 @@ router.get('/:goalId', async(req, res) => {
     } catch(err) {
         res.json({ status: 500, msg: 'Internal server error.'});
     }
+});
+
+// POST - create a skill
+router.post('/create', async (req, res) => {
+    const zodValidation = await zodValidator(skillCreation, req.body);
+    if(zodValidation.status === 403) return res.json(zodValidation);
+
+    const { name, description, level } = zodValidation.object as { name: string, description: string, level: "beginner" | "intermediate" | "advanced" }
+
+    const result = await createSkill({name, description, level });
+    
+    return res.json(result);
 });
 
 export default router;

@@ -2,7 +2,7 @@ import { Skills } from "../db/models/skills.models.js";
 import { getGoalById } from "./goals.service.js";
 import { toObjectId } from "../lib/objectIdConverter.js";
 
-interface ICreateSkill {
+export interface ICreateSkill {
     name: string,
     description: string, 
     level: "beginner" | "intermediate" | "advanced"

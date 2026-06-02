@@ -25,7 +25,7 @@ export async function createSkill(input: ICreateSkill) {
     const existingSkill = await Skills.findOne({ name: input.name, createdAt: Date.now() });
     if(existingSkill) { return { status: 409, msg: `Skill ${input.name} already exists.`} };
     
-    const newSkill = await Skills.create({ name: input.name, description: input.description, level: input.level });
+    const newSkill = await Skills.create({ name: input.name, description: input.description, level: input.level, createdAt: new Date });
     return { status: 200, msg: `Skill ${newSkill.name} has been added.`}
 }
 
@@ -42,6 +42,7 @@ export async function deleteSkill(input: IDeleteSkill) {
 export async function getSkillByGoalId(input: IGetSkill) {
     const goal = getGoalById({ id: toObjectId(input.goalId) });
     const skillIds = (await goal).goalObject?.skillIds;
+    if(!skillIds) return { status: 404, msg: `No skill found for the goal.` }
     
     const skills = await Promise.all(
         skillIds?.map((id) => getSkillById({ id: id.toString() })) ?? []);
@@ -59,5 +60,5 @@ export async function getSkillById(input: ISkillId) {
     const skill = await Skills.findOne({ _id: toObjectId(input.id) });
     if(!skill) { return { status: 404, msg: `Skill not found.`} }
 
-    return { status: 200, msg: `Skill ${skill.name} found.` }
+    return { status: 200, msg: `Skill ${skill.name} found.`, skill: skill }
 }

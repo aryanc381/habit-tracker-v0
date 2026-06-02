@@ -11,6 +11,10 @@ const skillCreation = zod.object({
     level: zod.enum(['beginner', 'intermediate', 'advanced'])
 }); 
 
+router.get('/health', async(req, res) => {
+    res.json({ status: 200, msg: 'Skill endpoint is healthy.'})
+});
+
 // GET - all the skills.
 router.get('/all', async(req, res) => {
     try {
@@ -42,9 +46,9 @@ router.delete('/:id', async(req, res) => {
 });
 
 // GET - skills by goalId
-router.get('/:goalId', async(req, res) => {
+router.get('/goalBased/:id', async(req, res) => {
     try {
-        const response = await getSkillByGoalId({ goalId: req.params.goalId });
+        const response = await getSkillByGoalId({ goalId: req.params.id });
         res.json(response);
     } catch(err) {
         res.json({ status: 500, msg: 'Internal server error.'});

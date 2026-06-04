@@ -21,6 +21,10 @@ const goalId = zod.object({
     id: zod.string()
 });
 
+router.get('/health', async(req, res) => {
+    res.json({ status: 200, msg: 'Goals route is healthy.' })
+})
+
 router.get('/all', async(req, res) => {
     try {
         const response = await getAllGoals();

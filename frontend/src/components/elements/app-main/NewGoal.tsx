@@ -24,7 +24,7 @@ export function NewGoal({ buttonName }: { buttonName: string }) {
             </ExpandableScreenTrigger>
             <ExpandableScreenContent className="bg-white border border-gray-500 ">
                 <div className="p-[3vw] text-black">
-                    <h2 className="text-[10vw] text-black tracking-[-0.75vw] mt-[-4vw] italic font-semibold">New Goal</h2>
+                    <h2 className="text-[10vw] text-black tracking-[-0.75vw] mt-[-4vw] font-semibold">New Goal</h2>
                     <p className="mt-4 text-muted-foreground text-gray-900">Be extra sure before adding a goal to your quarter.</p>
                     <div className="mt-[1vw]">
                         <p className="mb-[0.25vw]">Name</p>

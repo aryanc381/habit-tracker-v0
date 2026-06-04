@@ -1,5 +1,6 @@
 import type mongoose from 'mongoose';
 import { Goals } from '../db/models/goal.model.js';
+import { toObjectId } from '../lib/objectIdConverter.js';
 
 interface IGetGoal {
     id: mongoose.Types.ObjectId
@@ -41,8 +42,8 @@ export async function createGoal(input: ICreateGoal) {
 
 // delete a goal
 export async function deleteGoal(input: IDeleteGoal) {
-    const existingGoal = await Goals.findOne({ _id: input.id });
+    const existingGoal = await Goals.findOne({ _id: toObjectId(input.id) });
     if(!existingGoal) { return { status: 404, msg: `Goal not found.`} }
-    await Goals.deleteOne({ _id: input.id });
+    await Goals.deleteOne({ _id: toObjectId(input.id) });
     return { status: 200, msg: `Goal ${existingGoal.name} was deleted.`};
 }

@@ -51,8 +51,8 @@ export async function getSkillByGoalId(input: IGetSkill) {
 
 // get all the skills
 export async function getAllSkills() {
-    const skills = await Skills.find({}, { _id: 1, name: 1 }).lean();
-    return { status: 200, msg: `Skills found`, skills: skills.map(doc => ({ id: doc._id, name: doc.name })) }
+    const skills = await Skills.find({}, { _id: 1, name: 1, level: 1 }).lean();
+    return { status: 200, msg: `Skills found`, skills: skills.map(doc => ({ id: doc._id, name: doc.name, level: doc.level })) }
 }
 
 // get a skill by Ids

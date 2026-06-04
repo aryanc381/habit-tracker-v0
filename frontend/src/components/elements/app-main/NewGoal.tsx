@@ -6,17 +6,29 @@ import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import type { DateRange } from "react-day-picker";
 import { CiCirclePlus } from "react-icons/ci";
-
-const skills = [
-    { id: 1, name: 'basketball', level: 'beginner' },
-    { id: 2, name: 'football', level: 'intermediate' }
-];
+import { getAllSkills } from "@/services/skills.service";
+import type { IAllSkills } from "@/services/skills.service";
+import { toast } from "sonner";
 
 export function NewGoal({ buttonName }: { buttonName: string }) {
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [skills, setSkills] = useState<IAllSkills[]>([]);
+    const [skillIds, setSkillIds] = useState<string[]>([]);
     const [range, setRange] = useState<DateRange | undefined>({
         from: new Date(),
         to: undefined,
     });
+
+    const loadSkills = async () => {
+        try {
+            const res = await getAllSkills();
+            setSkills(res.data.skills);
+        } catch (err) {
+            toast.error(`Failed to load skills ${err}`);
+        }
+    };
+
     return(
         <ExpandableScreen layoutId="new-goal" contentRadius="0.1vw" triggerRadius="0.1vw">
             <ExpandableScreenTrigger>
@@ -28,15 +40,15 @@ export function NewGoal({ buttonName }: { buttonName: string }) {
                     <p className="mt-4 text-muted-foreground text-gray-900">Be extra sure before adding a goal to your quarter.</p>
                     <div className="mt-[1vw]">
                         <p className="mb-[0.25vw]">Name</p>
-                        <Input className="border-gray-300 p-[1vw] rounded-[0vw]" placeholder="Basketball" />
+                        <Input value={name} onChange={(e) => { setName(e.target.value); }} className="border-gray-300 p-[1vw] rounded-[0vw]" placeholder="Basketball" />
                     </div>
                     <div className="mt-[1vw]">
                         <p className="mb-[0.25vw]">Description</p>
-                        <Input className="border-gray-300 p-[1vw] rounded-[0vw]" placeholder="To become good at dribbling" />
+                        <Input value={description} onChange={ (e) => setDescription(e.target.value) } className="border-gray-300 p-[1vw] rounded-[0vw]" placeholder="To become good at dribbling" />
                     </div>
                     <div className="mt-[1vw]">
                         <p className="mb-[0.25vw]">Skills</p>
-                        <DropdownMenu>
+                        <DropdownMenu onOpenChange={(open) => open && loadSkills()}>
                             <DropdownMenuTrigger><Button className="bg-white border-gray-300 p-[1vw] rounded-[0vw] cursor-pointer" >Add Skills</Button></DropdownMenuTrigger>
                             <DropdownMenuContent className="mt-[0.25vw] w-[40vw] rounded-[0.1vw] bg-white text-black border border-gray-300">
                                 <DropdownMenuItem className="focus:bg-transparent focus:text-inherit">

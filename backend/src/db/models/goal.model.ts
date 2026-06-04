@@ -7,7 +7,7 @@ const goalSchema = new mongoose.Schema({
     startDate: { type: Date, required: true, default: null },
     etaDate: { type: Date, required: true, default: null },
     skillIds: [{ type: mongoose.Types.ObjectId, ref: "habit_tracker_skills", required: true, default: [] }],
-    status: { type: String, enum: ["planned", "in_progress", "off-track", "failed", "completed"], required: true, default: null }
+    status: { type: String, enum: ["planned", "in_progress", "off-track", "failed", "completed"], required: true, default: "planned" }
 });
 
 export const Goals = mongoose.model("habit_tracker_goals", goalSchema);

@@ -8,9 +8,10 @@ const router: Router = express.Router();
 const goalCreationBody = zod.object({
     name: zod.string().min(3, "Goal name should be minimum three characters long."),
     description: zod.string().min(10, "Goal descrtiption should be minimum 10 characters."),
-    startDate: zod.date(),
-    etaDate: zod.date(),
-    skillIds: zod.array(zod.string())
+    startDate: zod.coerce.date(),
+    etaDate: zod.coerce.date(),
+    skillIds: zod.array(zod.string()),
+    userId: zod.string()
 });
 
 const goalDeleteBody = zod.object({
@@ -28,9 +29,7 @@ router.get('/health', async(req, res) => {
 router.get('/all', async(req, res) => {
     try {
         const response = await getAllGoals();
-        if(!response) { return { status: 404, msg: 'No goals found.'} }
-
-        return { status: 200, msg: 'All goals found', goals: response }
+        return res.json(response);
     } catch(err) {
         return res.json({ status: 500, msg: 'Internal server error.'})
     }
@@ -38,7 +37,7 @@ router.get('/all', async(req, res) => {
 
 router.get('/:id', async(req, res) => {
     try {
-        const zodValidation = await zodValidator(goalId, req.params.id);
+        const zodValidation = await zodValidator(goalId, req.params);
         if(zodValidation.status === 403) return res.json(zodValidation);
 
         const { id } = zodValidation.object as { id: string };
@@ -47,19 +46,19 @@ router.get('/:id', async(req, res) => {
     } catch(err) {
         res.json({ status: 500, msg: 'Internal server error.'});
     }
-})
+});
 
 router.post('/create', async(req, res) => {
-    try {
+    // try {
         const zodValidation = await zodValidator(goalCreationBody, req.body);
         if(zodValidation.status === 403) return res.json(zodValidation);
 
-        const { name, description, startDate, etaDate, skillIds } = zodValidation.object as { name: string, description: string, startDate: Date, etaDate: Date, skillIds: string[] }
-        const response = await createGoal({name, description, startDate, etaDate, skillIds});
+        const { name, description, startDate, etaDate, skillIds, userId } = zodValidation.object as { name: string, description: string, startDate: Date, etaDate: Date, skillIds: string[], userId: string }
+        const response = await createGoal({name, description, startDate, etaDate, skillIds, userId});
         return res.json(response);
-    } catch(err) {
-        return res.json({ status: 500, msg: 'Internal server error.'});
-    }
+    // } catch(err) {
+    //     return res.json({ status: 500, msg: 'Internal server error.'});
+    // }
 });
 
 router.delete('/delete', async(req, res) => {

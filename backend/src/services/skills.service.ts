@@ -40,7 +40,7 @@ export async function deleteSkill(input: IDeleteSkill) {
 
 // get skills for a specific goal
 export async function getSkillByGoalId(input: IGetSkill) {
-    const goal = getGoalById({ id: toObjectId(input.goalId) });
+    const goal = getGoalById({ id: input.goalId });
     const skillIds = (await goal).goalObject?.skillIds;
     if(!skillIds) return { status: 404, msg: `No skill found for the goal.` }
     

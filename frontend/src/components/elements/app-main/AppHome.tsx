@@ -52,7 +52,7 @@ export function AppHome() {
                     <p className="text-[2vw] ml-[0.25vw] font-semibold tracking-[-0.05vw]">Goals</p>
                     <NewGoal buttonName="new goal" />
                 </div>
-                <div className="flex gap-[1vw] mt-[1vw] w-full overflow-x-auto pb-[0.5vw]">
+                <div className="flex gap-[1vw] mt-[1vw] w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     {goals.map((goal) => (
                         <Card key={goal.id} className="w-[20vw] h-[11vw] shrink-0 p-[1vw] gap-[0.75vw] rounded-[0vw] border border-gray-500">
                             <div className="flex items-center justify-between gap-[0.5vw]">

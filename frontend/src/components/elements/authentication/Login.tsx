@@ -11,11 +11,15 @@ export function Login() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-        const handleLogin = async() => {
+    const handleLogin = async() => {
         try {
             const res = await login( email, password);
             console.log('login response:', res.data);
-            if(res.status === 200) { toast.success(res.data.msg); navigate('/app') }
+            if(res.data.status === 200) { 
+                toast.success(res.data.msg); 
+                localStorage.removeItem("userId");
+                localStorage.setItem("userId", res.data.userId); 
+                navigate('/app') }
             else { toast.error(res.data.msg); }
         } catch(err) { toast.error('Backend server is not running.'); }
     } 

@@ -17,10 +17,10 @@ export const getAllGoals = () => {
     return api.get('/goals/all');
 }
 
-export const getGoalById = (id: string) {
+export const getGoalById = (id: string) => {
     return api.get(`/goals/${id}`);
 }
 
-export const deleteGoal = (id: string) {
+export const deleteGoal = (id: string) => {
     return api.delete('goals/delete', { data: {id} })
 }

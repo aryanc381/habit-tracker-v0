@@ -35,5 +35,5 @@ export async function login(input: ILoginInput) {
 
     if(!auth) { return { status: 401, msg: `Invalid credentials for ${existingUser.email}`} }
 
-    return { status: 200, msg: `Login successfull.`}
+    return { status: 200, msg: `Login successfull.`, userId: existingUser._id }
 }

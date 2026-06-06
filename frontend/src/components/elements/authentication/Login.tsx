@@ -14,8 +14,7 @@ export function Login() {
     const handleLogin = async() => {
         try {
             const res = await login( email, password);
-            console.log('login response:', res.data);
-            if(res.data.status === 200) { 
+            if(res.data.status === 200) {
                 toast.success(res.data.msg); 
                 localStorage.removeItem("userId");
                 localStorage.setItem("userId", res.data.userId); 

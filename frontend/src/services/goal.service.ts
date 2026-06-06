@@ -13,8 +13,8 @@ export const createGoal = (payload: ICreateGoalPayload) => {
     return api.post('/goals/create', payload);
 }
 
-export const getAllGoals = () => {
-    return api.get('/goals/all');
+export const getAllGoals = (id: string) => {
+    return api.get(`/goals/all/${id}`);
 }
 
 export const getGoalById = (id: string) => {

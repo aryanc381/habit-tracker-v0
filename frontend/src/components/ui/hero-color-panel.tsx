@@ -200,7 +200,7 @@ export function useHeroColorPanels() {
 export const HeroColorPanelsRoot = React.forwardRef<
   HTMLElement,
   HeroColorPanelsRootProps
->(({ className, children, srTitle = "AI SDK Agents", title = <span className="text-[4vw]">Looking at personal growth as a business.</span>, subtitle = "", description = defaultDescription, showCta = true, ctaProps, renderCta, showBadges = true, techStack = defaultTechStack, renderBadge, desktopShaderProps, mobileShaderProps, ...props }, ref) => {
+>(({ className, children, srTitle = "AI SDK Agents", title = <span className="text-[4vw]">Looking at personal growth from a business-first perspective.</span>, subtitle = "", description = defaultDescription, showCta = true, ctaProps, renderCta, showBadges = true, techStack = defaultTechStack, renderBadge, desktopShaderProps, mobileShaderProps, ...props }, ref) => {
   const mergedCtaProps = React.useMemo(
     () => ({
       ...ctaProps,

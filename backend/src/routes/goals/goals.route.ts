@@ -1,6 +1,6 @@
 import express, { Router } from 'express'
 import zod from 'zod';
-import { createGoal, deleteGoal, getAllGoals, getGoalById } from '../../services/goals.service.js';
+import { changeStatusOfGoal, createGoal, deleteGoal, getAllGoals, getGoalById } from '../../services/goals.service.js';
 import { zodValidator } from '../../lib/zodValidation.js';
 
 const router: Router = express.Router();
@@ -17,6 +17,11 @@ const goalCreationBody = zod.object({
 const goalDeleteBody = zod.object({
     id: zod.string()
 });
+
+const goalStatusBody = zod.object({
+    id: zod.string(), 
+    status: zod.enum(["planned", "in_progress", "off-track", "failed", "completed"]) 
+})
 
 const goalId = zod.object({
     id: zod.string()
@@ -74,5 +79,20 @@ router.delete('/delete', async(req, res) => {
         return res.json({ status: 500, msg: 'Internal server error.'});
     }
 });
+
+router.post('/changeStatus', async(req, res) => {
+    try {
+        const zodValidation = await zodValidator(goalStatusBody, req.body);
+        if(zodValidation.status !== 200) { return res.json(zodValidation) }
+
+        const { id, status } = zodValidation.object as ({ id: string, status: "planned" | "in_progress" | "off-track" | "failed" | "completed" });
+
+        const response = await changeStatusOfGoal({ id, status });
+        return res.json(response);
+        
+    } catch(err) {
+        return res.json({ status: 500, msg: 'Internal server error.'})
+    }
+})
 
 export default router;

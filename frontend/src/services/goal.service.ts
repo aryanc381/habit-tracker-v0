@@ -1,5 +1,7 @@
 import api from "./api";
 
+export type GoalStatus = "planned" | "in_progress" | "off-track" | "failed" | "completed";
+
 export interface ICreateGoalPayload {
     name: string;
     description: string;
@@ -23,4 +25,8 @@ export const getGoalById = (id: string) => {
 
 export const deleteGoal = (id: string) => {
     return api.delete('goals/delete', { data: {id} })
+}
+
+export const changeGoalStatus = (id: string, status: GoalStatus) => {
+    return api.post('/goals/changeStatus', { id, status });
 }

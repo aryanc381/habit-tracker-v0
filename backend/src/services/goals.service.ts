@@ -18,6 +18,11 @@ interface IDeleteGoal {
     id: string
 } 
 
+interface IChangeStatus {
+    id: string
+    status: "planned" | "in_progress" | "off-track" | "failed" | "completed"
+}
+
 // get a goal object by Id
 export async function getGoalById(input: IGetGoal) {
     const goalObject = await Goals.findOne({ _id: toObjectId(input.id) });
@@ -47,4 +52,14 @@ export async function deleteGoal(input: IDeleteGoal) {
     if(!existingGoal) { return { status: 404, msg: `Goal not found.`} }
     await Goals.deleteOne({ _id: toObjectId(input.id) });
     return { status: 200, msg: `Goal ${existingGoal.name} was deleted.`};
+}
+
+// change the status of a goal
+export async function changeStatusOfGoal(input: IChangeStatus) {
+    const existingGoal = await Goals.findOne({ _id: toObjectId(input.id) });
+    if(!existingGoal) { return { status: 404, msg: `Goal not found.`} }
+
+    existingGoal.status = input.status;
+    await existingGoal.save();
+    return { status: 200, msg: `Goal status updated to ${input.status}.` };
 }

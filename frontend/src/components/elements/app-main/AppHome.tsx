@@ -29,9 +29,9 @@ export function AppHome() {
                     <p className="text-[2vw] ml-[0.25vw] font-semibold tracking-[-0.05vw]">Goals</p>
                     <NewGoal buttonName="new goal" />
                 </div>
-                <div className="flex flex-wrap gap-[1vw] mt-[1vw]">
+                <div className="flex gap-[1vw] mt-[1vw] w-full overflow-x-auto pb-[0.5vw]">
                     {goals.map((goal) => (
-                        <Card key={goal.id} className="w-[20vw] h-[11vw] p-[1vw] gap-[0.75vw] rounded-[0vw] border border-gray-500">
+                        <Card key={goal.id} className="w-[20vw] h-[11vw] shrink-0 p-[1vw] gap-[0.75vw] rounded-[0vw] border border-gray-500">
                             <div className="flex items-center justify-between gap-[0.5vw]">
                                 <CardTitle className="truncate text-[1.1vw]">{goal.name}</CardTitle>
                                 <span className="shrink-0 text-[0.7vw] uppercase tracking-wide text-gray-400 border border-gray-600 px-[0.4vw] py-[0.1vw]">{goal.status}</span>

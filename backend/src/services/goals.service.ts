@@ -28,9 +28,9 @@ export async function getGoalById(input: IGetGoal) {
 
 // get all the goal : {ids, names}
 export async function getAllGoals(input: IGetGoal) {
-    const ids = await Goals.find({ userId: toObjectId(input.id) }, {_id: 1, name: 1}).lean();
+    const ids = await Goals.find({ userId: toObjectId(input.id) }, {_id: 1, name: 1, description: 1, startDate: 1, etaDate: 1, status: 1}).lean();
     if(ids.length === 0) { return { status: 404, msg: 'No goals found.'} }
-  return { status: 200, goals: ids.map((doc) => ({ id: doc._id, name: doc.name })) }
+  return { status: 200, goals: ids.map((doc) => ({ id: doc._id, name: doc.name, description: doc.description, startDate: doc.startDate, etaDate: doc.etaDate, status: doc.status })) }
 }
 // create a goal
 export async function createGoal(input: ICreateGoal) {

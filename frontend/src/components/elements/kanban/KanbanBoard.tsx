@@ -57,8 +57,8 @@ function TicketCard({
     "value" | "children"
 >) {
     const content = (
-        <Frame variant="ghost" spacing="sm" className="[--frame-radius:0px] p-0">
-            <FramePanel className="p-[0.5vw]">
+        <Frame variant="ghost" spacing="sm" className="[--frame-radius:0] p-0">
+            <FramePanel className="p-[0.5vw] transition-colors hover:bg-[#1c1c1c]">
                 <div className="flex flex-col gap-[0.4vw]">
                     <span className="text-[0.75vw] font-medium text-[#e5e5e5]">{ticket.title}</span>
                     <p className="text-[#545454] line-clamp-2 text-[0.6vw]">
@@ -71,7 +71,7 @@ function TicketCard({
                             </span>
                         ))}
                     </div>
-                    <Progress value={ticket.progress} className="h-[0.3vw] rounded-[0px]" />
+                    <Progress value={ticket.progress} className="h-[0.3vw] rounded-none" />
                     <div className="flex items-center justify-between">
                         <span className="text-[#545454] text-[0.55vw] tabular-nums">
                             {ticket.progress}% complete
@@ -111,11 +111,11 @@ export function TicketKanban({ tickets, onTicketsChange, onTicketClick, columnHe
                     const col = COLUMNS[colId as TicketStatus]
                     return (
                         <KanbanColumn key={colId} value={colId}>
-                            <Frame spacing="sm" className={`[--frame-radius:0px] h-full ${columnHeight}`}>
-                                <FrameHeader className="flex flex-row items-center gap-[0.35vw]">
-                                    <div className={cn("w-[0.45vw] h-[0.45vw] rounded", col.color)} />
+                            <Frame spacing="sm" className={`[--frame-radius:0] p-0 gap-[0.3vw] h-full ${columnHeight}`}>
+                                <FrameHeader className="flex flex-row items-center gap-[0.35vw] px-[0.3vw]">
+                                    <div className={cn("w-[0.45vw] h-[0.45vw] rounded-full", col.color)} />
                                     <FrameTitle className="text-[0.7vw] font-medium text-white tracking-wide">{col.title}</FrameTitle>
-                                    <Badge variant="outline" size="sm" className="ml-auto rounded-none text-[0.55vw] px-[0.3vw] py-[0.05vw]">
+                                    <Badge variant="outline" className="ml-auto rounded-none h-auto text-[0.55vw] px-[0.3vw] py-[0.05vw]">
                                         {items.length}
                                     </Badge>
                                 </FrameHeader>

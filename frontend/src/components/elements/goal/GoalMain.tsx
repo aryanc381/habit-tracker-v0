@@ -1,10 +1,11 @@
 import { getGoalById } from "@/services/goal.service";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 import { HabitChart } from "../app-main/MainChart";
 import { Card } from "@/components/ui/card";
 import { TicketKanban, type Ticket } from "../kanban/KanbanBoard";
+import { Button } from "@/components/ui/button";
 
 interface GoalInfo {
     userId: string;
@@ -19,6 +20,7 @@ interface GoalInfo {
 export function GoalMain() {
     const { goalId } = useParams();
     const [goalInfo, setGoalInfo] = useState<GoalInfo>();
+    const navigate = useNavigate();
     const [tickets, setTickets] = useState<Record<string, Ticket[]>>({
         pending: [
             { id: "t1", title: "Design landing page", description: "Create main hero section with feature callouts", progress: 0, votes: 142, labels: ["design", "frontend"] },
@@ -56,10 +58,17 @@ export function GoalMain() {
 
     return(
         <div className="m-[1vw]">
-            <div className="text-white">
-                <p className="text-[2vw]">{goalInfo?.name}</p>
-                <p className="text-[1vw]">{goalInfo?.description}</p>
+            <div className="flex justify-between">
+                <div className="text-white">
+                    <p className="text-[2vw]">{goalInfo?.name}</p>
+                    <p className="text-[1vw]">{goalInfo?.description}</p>
+                </div>
+                <div className="flex gap-[0.25vw]">
+                    <Button variant={'outline'} className="cursor-pointer rounded-[0vw]" onClick={() => {navigate(-1)}}>Go back</Button>
+                    <Button className="cursor-pointer rounded-[0vw]">Add Ticket</Button>
+                </div>
             </div>
+            
             <div className="mt-[1vw]">
                 <Card className="pr-[2vw] rounded-[0vw] border">
                     <HabitChart className="h-[30vh]" />

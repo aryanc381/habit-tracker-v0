@@ -111,7 +111,7 @@ export function TicketKanban({ tickets, onTicketsChange, onTicketClick, columnHe
                     const col = COLUMNS[colId as TicketStatus]
                     return (
                         <KanbanColumn key={colId} value={colId}>
-                            <Frame spacing="sm" className={`[--frame-radius:0] p-0 gap-[0.3vw] h-full ${columnHeight}`}>
+                            <Frame spacing="sm" className={`[--frame-radius:0] p-[0.5vw] gap-[0.3vw] h-full ${columnHeight}`}>
                                 <FrameHeader className="flex flex-row items-center gap-[0.35vw] px-[0.3vw]">
                                     <div className={cn("w-[0.45vw] h-[0.45vw] rounded-full", col.color)} />
                                     <FrameTitle className="text-[0.7vw] font-medium text-white tracking-wide">{col.title}</FrameTitle>
@@ -121,7 +121,7 @@ export function TicketKanban({ tickets, onTicketsChange, onTicketClick, columnHe
                                 </FrameHeader>
                                 <KanbanColumnContent
                                     value={colId}
-                                    className="flex flex-col gap-[0.3vw] p-[0.2vw] overflow-y-auto flex-1"
+                                    className="flex flex-col gap-[0.3vw] p-[0.75vw] overflow-y-auto flex-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                                 >
                                     {items.map((ticket) => (
                                         <div key={ticket.id} onClick={() => onTicketClick?.(ticket)}>

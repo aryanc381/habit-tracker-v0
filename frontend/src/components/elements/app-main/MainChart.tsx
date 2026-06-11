@@ -1,5 +1,6 @@
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid } from "recharts";
+import { cn } from "@/lib/utils";
 
 const data = [
     { date: "01/06", progress: 30 },
@@ -41,9 +42,9 @@ progress: {
 },
 };
 
-export function HabitChart() {
+export function HabitChart({ className }: { className?: string }) {
     return (
-      <ChartContainer config={chartConfig} className="h-[50vh] w-full">
+      <ChartContainer config={chartConfig} className={cn("h-[50vh] w-full", className)}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" />

@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { getAllGoals, changeGoalStatus, type GoalStatus } from "@/services/goal.service";
 import { formatDate } from "@/lib/date";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useNavigate } from "react-router";
 
 const STATUSES: GoalStatus[] = ["planned", "in_progress", "off-track", "failed", "completed"];
 
@@ -19,6 +20,7 @@ const statusColor: Record<string, string> = {
 
 export function AppHome() {
    const [goals, setGoals] = useState<{id:string; name:string; description: string; startDate: string; etaDate: string; status: string}[]>([]);
+   const navigate = useNavigate();
    useEffect(() => {
     const userId = localStorage.getItem("userId");
     if(!userId) { toast.error(`Could not load data for user.`); return; }
@@ -54,7 +56,7 @@ export function AppHome() {
                 </div>
                 <div className="flex gap-[1vw] mt-[1vw] w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     {goals.map((goal) => (
-                        <Card key={goal.id} className="w-[20vw] h-[11vw] shrink-0 p-[1vw] gap-[0.75vw] rounded-[0vw] border border-gray-500">
+                        <Card key={goal.id} onClick={() => {navigate(`/app/${goal.id}`)}} className="cursor-pointer hover:bg-[#1a1a1a] w-[20vw] h-[11vw] shrink-0 p-[1vw] gap-[0.75vw] rounded-[0vw] border border-gray-500">
                             <div className="flex items-center justify-between gap-[0.5vw]">
                                 <CardTitle className="truncate text-[1.1vw]">{goal.name}</CardTitle>
                                 <DropdownMenu>

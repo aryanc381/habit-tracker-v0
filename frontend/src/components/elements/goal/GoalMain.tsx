@@ -53,7 +53,7 @@ export function GoalMain() {
                     title: t.name,
                     description: t.description ?? "",
                     progress: t.level?.overallCompletionPercentage ?? 0,
-                    votes: 0,
+                    createdAt: t.createdAt,
                     labels: [],
                 });
             }

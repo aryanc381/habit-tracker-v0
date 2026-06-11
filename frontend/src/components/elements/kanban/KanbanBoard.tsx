@@ -1,4 +1,4 @@
-import { ComponentProps, useState } from "react"
+import type { ComponentProps } from "react"
 import { Badge } from "@/components/reui/badge"
 import {
     Frame,
@@ -24,7 +24,7 @@ export interface Ticket {
     title: string
     description: string
     progress: number
-    votes: number
+    createdAt: string
     labels: string[]
 }
 
@@ -77,7 +77,7 @@ function TicketCard({
                             {ticket.progress}% complete
                         </span>
                         <span className="text-[#545454] text-[0.55vw] tabular-nums">
-                            {ticket.votes} votes
+                            {new Date(ticket.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                         </span>
                     </div>
                 </div>

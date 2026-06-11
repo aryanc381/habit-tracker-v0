@@ -113,8 +113,8 @@ export function TicketKanban({ tickets, onTicketsChange, onTicketClick, columnHe
                         <KanbanColumn key={colId} value={colId}>
                             <Frame spacing="sm" className={`[--frame-radius:0px] h-full ${columnHeight}`}>
                                 <FrameHeader className="flex flex-row items-center gap-[0.35vw]">
-                                    <div className={cn("w-[0.45vw] h-[0.45vw]", col.color)} />
-                                    <FrameTitle className="text-[0.7vw] font-medium text-[#b4b4b4] uppercase tracking-wide">{col.title}</FrameTitle>
+                                    <div className={cn("w-[0.45vw] h-[0.45vw] rounded", col.color)} />
+                                    <FrameTitle className="text-[0.7vw] font-medium text-white tracking-wide">{col.title}</FrameTitle>
                                     <Badge variant="outline" size="sm" className="ml-auto rounded-none text-[0.55vw] px-[0.3vw] py-[0.05vw]">
                                         {items.length}
                                     </Badge>

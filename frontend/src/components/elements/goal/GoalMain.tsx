@@ -1,4 +1,5 @@
 import { getGoalById } from "@/services/goal.service";
+import { getTicketsByGoalId, updateTicketStatus } from "@/services/tickets.service";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
@@ -6,6 +7,7 @@ import { HabitChart } from "../app-main/MainChart";
 import { Card } from "@/components/ui/card";
 import { TicketKanban, type Ticket } from "../kanban/KanbanBoard";
 import { Button } from "@/components/ui/button";
+import { NewTicket } from "./NewTicket";
 
 interface GoalInfo {
     userId: string;
@@ -17,32 +19,65 @@ interface GoalInfo {
     status: "planned" | "in_progress" | "off-track" | "failed" | "completed";
 }
 
+const STATUSES: Record<string, string> = {
+    pending: "pending",
+    in_progress: "in_progress",
+    average: "average",
+    fail: "fail",
+    success: "success",
+};
+
 export function GoalMain() {
     const { goalId } = useParams();
     const [goalInfo, setGoalInfo] = useState<GoalInfo>();
+    const [tickets, setTickets] = useState<Record<string, Ticket[]>>({});
     const navigate = useNavigate();
-    const [tickets, setTickets] = useState<Record<string, Ticket[]>>({
-        pending: [
-            { id: "t1", title: "Design landing page", description: "Create main hero section with feature callouts", progress: 0, votes: 142, labels: ["design", "frontend"] },
-            { id: "t2", title: "Set up CI/CD pipeline", description: "GitHub Actions for automated deploy", progress: 0, votes: 98, labels: ["backend"] },
-            { id: "t3", title: "Write API docs", description: "Document all REST endpoints with examples", progress: 0, votes: 56, labels: ["docs"] },
-        ],
-        in_progress: [
-            { id: "t4", title: "User auth flow", description: "Login, signup, and JWT refresh", progress: 65, votes: 234, labels: ["backend"] },
-            { id: "t5", title: "Dashboard widgets", description: "Chart components and data fetching", progress: 40, votes: 176, labels: ["frontend"] },
-            { id: "t6", title: "Search feature", description: "Full-text search with debounced input", progress: 30, votes: 112, labels: ["frontend", "backend"] },
-        ],
-        average: [
-            { id: "t7", title: "Notification system", description: "Real-time alerts via WebSockets", progress: 50, votes: 89, labels: ["backend"] },
-        ],
-        fail: [
-            { id: "t8", title: "Mobile responsive nav", description: "Hamburger menu and touch interactions", progress: 20, votes: 67, labels: ["frontend"] },
-        ],
-        success: [
-            { id: "t9", title: "Database migrations", description: "Prisma schema and initial seed data", progress: 100, votes: 203, labels: ["backend"] },
-            { id: "t10", title: "Dark mode toggle", description: "Theme switcher with localStorage persistence", progress: 100, votes: 456, labels: ["frontend"] },
-        ],
-        }) 
+
+    const fetchTickets = async () => {
+        if (!goalId) return;
+        try {
+            const res = await getTicketsByGoalId(goalId);
+            if (res.data.status !== 200) {
+                toast.error(res.data.msg);
+                return;
+            }
+            const grouped: Record<string, Ticket[]> = {};
+            for (const key of Object.keys(STATUSES)) {
+                grouped[key] = [];
+            }
+            for (const t of res.data.tickets) {
+                const status = t.level?.status ?? "pending";
+                if (!grouped[status]) grouped[status] = [];
+                grouped[status].push({
+                    id: t.id,
+                    title: t.name,
+                    description: t.description ?? "",
+                    progress: t.level?.overallCompletionPercentage ?? 0,
+                    votes: 0,
+                    labels: [],
+                });
+            }
+            setTickets(grouped);
+        } catch {
+            toast.error("Failed to load tickets.");
+        }
+    };
+
+    const handleTicketsChange = (newColumns: Record<string, Ticket[]>) => {
+        const oldColumns = tickets;
+        setTickets(newColumns);
+
+        for (const [status, items] of Object.entries(newColumns)) {
+            const oldIds = new Set((oldColumns[status] ?? []).map((t) => t.id));
+            for (const ticket of items) {
+                if (!oldIds.has(ticket.id)) {
+                    updateTicketStatus(ticket.id, status as any);
+                    break;
+                }
+            }
+        }
+    };
+
     useEffect(() => {
         if (!goalId) return;
         (async () => {
@@ -50,11 +85,14 @@ export function GoalMain() {
                 const res = await getGoalById(goalId);
                 setGoalInfo(res.data.goalObject);
             } catch {
-                    toast.error("Failed to load goal.");
-                }
-            })();
-        }, [goalId]
-    );
+                toast.error("Failed to load goal.");
+            }
+        })();
+    }, [goalId]);
+
+    useEffect(() => {
+        fetchTickets();
+    }, [goalId]);
 
     return(
         <div className="m-[1vw]">
@@ -65,7 +103,7 @@ export function GoalMain() {
                 </div>
                 <div className="flex gap-[0.25vw]">
                     <Button variant={'outline'} className="cursor-pointer rounded-[0vw]" onClick={() => {navigate(-1)}}>Go back</Button>
-                    <Button className="cursor-pointer rounded-[0vw]">Add Ticket</Button>
+                    <NewTicket goalId={goalId!} onTicketCreated={fetchTickets} />
                 </div>
             </div>
             
@@ -75,8 +113,8 @@ export function GoalMain() {
                 </Card>
             </div>
             <div className="mt-[1vw]">
-                <TicketKanban columnHeight="h-[50vh]" tickets={tickets} onTicketsChange={setTickets} onTicketClick={(t) => console.log("clicked", t.id)} />
+                <TicketKanban columnHeight="h-[50vh]" tickets={tickets} onTicketsChange={handleTicketsChange} onTicketClick={(t) => console.log("clicked", t.id)} />
             </div>
         </div>
-    )
+    );
 }

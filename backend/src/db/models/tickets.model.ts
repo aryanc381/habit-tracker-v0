@@ -17,8 +17,8 @@ const ticketSchema = new mongoose.Schema({
             slope: { type: String, enum: ["/", "-", "\\"], default: null }
         }],
     },
-    createdAt: { type: Date, required: true, default: null },
+    createdAt: { type: Date, default: null },
     evaluatedAt: { type: Date, default: null }
 });
 
-export const Ticket = mongoose.model("habit_tracker_tickets", ticketSchema);
+export const Tickets = mongoose.model("habit_tracker_tickets", ticketSchema);

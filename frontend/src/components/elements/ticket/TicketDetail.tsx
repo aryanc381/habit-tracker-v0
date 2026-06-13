@@ -89,33 +89,33 @@ export function TicketDetail({ open, onOpenChange, ticket, goalId }: TicketDetai
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-[40vw] rounded-[0vw]">
+            <DialogContent className="max-w-[50vw] rounded-[0vw]">
                 <DialogHeader>
-                    <DialogTitle className="text-[1.5vw]">{ticket.title}</DialogTitle>
-                    <DialogDescription className="text-[0.75vw]">{ticket.description}</DialogDescription>
+                    <DialogTitle className="text-[2vw]">{ticket.title}</DialogTitle>
+                    <DialogDescription className="text-[1.2vw]">{ticket.description}</DialogDescription>
                 </DialogHeader>
 
-                <div className="space-y-[0.8vw]">
+                <div className="space-y-[1.5vw]">
                     {skills.map((skill: any) => (
                         <div key={skill._id}>
-                            <div className="flex items-center justify-between border-t pt-[0.5vw] mb-[0.3vw]">
-                                <span className="text-[0.7vw] font-medium">{skill.name}</span>
+                            <div className="flex items-center justify-between border-t pt-[0.8vw] mb-[0.5vw]">
+                                <span className="text-[1.2vw] font-medium">{skill.name}</span>
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="h-[1.2vw] w-[1.2vw] rounded-[0vw]"
+                                    className="h-[2.5vw] w-[2.5vw] rounded-[0vw]"
                                     onClick={() => setAddingSkillId(addingSkillId === skill._id ? null : skill._id)}
                                 >
-                                    <Plus className="h-[0.7vw] w-[0.7vw]" />
+                                    <Plus className="h-[1.2vw] w-[1.2vw]" />
                                 </Button>
                             </div>
 
                             {addingSkillId === skill._id && (
-                                <div className="flex gap-[0.3vw] mb-[0.3vw]">
+                                <div className="flex gap-[0.5vw] mb-[0.5vw]">
                                     <Input
                                         value={newTaskTitle}
                                         onChange={(e) => setNewTaskTitle(e.target.value)}
-                                        className="h-[1.5vw] text-[0.6vw] rounded-[0vw]"
+                                        className="h-[3vw] text-[1.2vw] rounded-[0vw]"
                                         placeholder="Task name"
                                         onKeyDown={(e) => {
                                             if (e.key === "Enter") handleCreateTask(skill._id)
@@ -123,7 +123,7 @@ export function TicketDetail({ open, onOpenChange, ticket, goalId }: TicketDetai
                                     />
                                     <Button
                                         size="sm"
-                                        className="h-[1.5vw] text-[0.6vw] rounded-[0vw]"
+                                        className="h-[3vw] text-[1.2vw] rounded-[0vw]"
                                         onClick={() => handleCreateTask(skill._id)}
                                     >
                                         Add
@@ -132,17 +132,17 @@ export function TicketDetail({ open, onOpenChange, ticket, goalId }: TicketDetai
                             )}
 
                             {tasksForSkill(skill._id).length === 0 && !addingSkillId && (
-                                <p className="text-[0.55vw] text-muted-foreground">No tasks yet.</p>
+                                <p className="text-[1vw] text-muted-foreground">No tasks yet.</p>
                             )}
 
                             {tasksForSkill(skill._id).map((task: any) => (
-                                <div key={task._id} className="flex items-center gap-[0.4vw] py-[0.15vw]">
+                                <div key={task._id} className="flex items-center gap-[0.6vw] py-[0.3vw]">
                                     <Checkbox
                                         checked={task.status}
                                         onCheckedChange={() => handleToggleStatus(task._id, task.status)}
-                                        className="rounded-[0vw] h-[0.7vw] w-[0.7vw]"
+                                        className="rounded-[0vw] h-[1.5vw] w-[1.5vw]"
                                     />
-                                    <span className={cn("text-[0.65vw]", task.status && "line-through text-muted-foreground")}>
+                                    <span className={cn("text-[1.1vw]", task.status && "line-through text-muted-foreground")}>
                                         {task.title}
                                     </span>
                                 </div>

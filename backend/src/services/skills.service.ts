@@ -29,7 +29,7 @@ export async function createSkill(input: ICreateSkill) {
     return { status: 200, msg: `Skill ${newSkill.name} has been added.`}
 }
 
-// remove a skill
+// delete a skill
 export async function deleteSkill(input: IDeleteSkill) {
     const skillCheck = await Skills.findOne({ _id: input.id });
     if(!skillCheck) { return { status: 404, msg: `Skill not found.`} };

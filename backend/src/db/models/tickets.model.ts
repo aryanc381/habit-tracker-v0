@@ -17,7 +17,7 @@ const ticketSchema = new mongoose.Schema({
             slope: { type: String, enum: ["/", "-", "\\"], default: null }
         }],
     },
-    createdAt: { type: Date, default: null },
+    createdAt: { type: Date, required: true, default: null },
     evaluatedAt: { type: Date, default: null }
 });
 

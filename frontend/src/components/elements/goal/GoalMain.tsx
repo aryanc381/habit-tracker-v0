@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { TicketKanban, type Ticket } from "../kanban/KanbanBoard";
 import { Button } from "@/components/ui/button";
 import { NewTicket } from "./NewTicket";
+import { TicketDetail } from "../ticket/TicketDetail";
 
 interface GoalInfo {
     userId: string;
@@ -31,6 +32,8 @@ export function GoalMain() {
     const { goalId } = useParams();
     const [goalInfo, setGoalInfo] = useState<GoalInfo>();
     const [tickets, setTickets] = useState<Record<string, Ticket[]>>({});
+    const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
+    const [dialogOpen, setDialogOpen] = useState(false);
     const navigate = useNavigate();
 
     const fetchTickets = async () => {
@@ -113,8 +116,12 @@ export function GoalMain() {
                 </Card>
             </div>
             <div className="mt-[1vw]">
-                <TicketKanban columnHeight="h-[50vh]" tickets={tickets} onTicketsChange={handleTicketsChange} onTicketClick={(t) => console.log("clicked", t.id)} />
+                <TicketKanban columnHeight="h-[50vh]" tickets={tickets} onTicketsChange={handleTicketsChange} onTicketClick={(t) => { setSelectedTicket(t); setDialogOpen(true); }} />
             </div>
+
+            {selectedTicket && (
+                <TicketDetail open={dialogOpen} onOpenChange={setDialogOpen} ticket={selectedTicket} goalId={goalId!} />
+            )}
         </div>
     );
 }

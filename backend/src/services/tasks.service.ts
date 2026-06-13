@@ -27,8 +27,8 @@ export async function createTask(input: ICreateTask) {
         title: input.title,
         skillId: toObjectId(input.skillId),
         ticketId: toObjectId(input.ticketId),
-        ...(input.description ? { description: input.description } : {}),
-        ...(input.etaTime ? { etaTime: new Date(input.etaTime) } : {}),
+        description: input.description ?? "No description",
+        etaTime: input.etaTime ? new Date(input.etaTime) : new Date(),
     });
 
     await recalcSkillMetrics(input.ticketId, input.skillId);

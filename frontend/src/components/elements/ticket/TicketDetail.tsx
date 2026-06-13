@@ -89,7 +89,7 @@ export function TicketDetail({ open, onOpenChange, ticket, goalId }: TicketDetai
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-[50vw] rounded-[0vw]">
+            <DialogContent className="!fixed !top-0 !right-0 !left-auto !h-dvh w-[67vw] max-w-[67vw] !translate-x-0 !translate-y-0 !rounded-none sm:max-w-[67vw] px-[2vw] py-[1.5vw] overflow-y-auto [scrollbar-width:none]">
                 <DialogHeader>
                     <DialogTitle className="text-[2vw]">{ticket.title}</DialogTitle>
                     <DialogDescription className="text-[1.2vw]">{ticket.description}</DialogDescription>

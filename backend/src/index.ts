@@ -3,9 +3,11 @@ import { env } from './env.js';
 import rootRouter from './routes/router.js';
 import { connectDb } from './db/mongo.js';
 import cors from 'cors';
+import { startEvaluationCron } from './cron/evaluation.cron.js';
 
 const app = express();
 await connectDb();
+startEvaluationCron();
 
 app.use(express.json());
 app.use(cors());

@@ -32,7 +32,7 @@ export function HabitChart({ goalId, userId, viewMode, className, onNavigate }: 
     className?: string;
     onNavigate?: (id: string) => void;
 }) {
-    const [allData, setAllData] = useState<any[]>([]);
+    const [allData, setAllData] = useState<any>(null);
     const [filteredData, setFilteredData] = useState<any[]>([]);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
@@ -46,7 +46,7 @@ export function HabitChart({ goalId, userId, viewMode, className, onNavigate }: 
                 if (goalId) {
                     const fetchFn = viewMode === "skills" ? getEvaluationHistoryWithSkills : getEvaluationHistory;
                     const res = await fetchFn(goalId);
-                    if (res.data.status !== 200) { toast.error(res.data.msg); setAllData([]); return; }
+                    if (res.data.status !== 200) { toast.error(res.data.msg); setAllData(null); return; }
                     const raw = res.data.history ?? [];
 
                     if (viewMode === "skills") {
@@ -62,7 +62,7 @@ export function HabitChart({ goalId, userId, viewMode, className, onNavigate }: 
                         const allDates = [...new Set(raw.map((r: any) => fmtDate(new Date(r.date))))];
                         const chartData = allDates.map(dateStr => {
                             const row: any = { date: dateStr };
-                            for (const [ticketId, item] of Object.entries(raw)) {
+                            for (const [, item] of Object.entries(raw)) {
                                 const itemAny = item as any;
                                 if (fmtDate(new Date(itemAny.date)) === dateStr) {
                                     for (const sm of itemAny.skillMetrics ?? []) {
@@ -86,7 +86,7 @@ export function HabitChart({ goalId, userId, viewMode, className, onNavigate }: 
                     }
                 } else if (userId) {
                     const res = await getAllEvaluationHistory(userId);
-                    if (res.data.status !== 200) { toast.error(res.data.msg); setAllData([]); return; }
+                    if (res.data.status !== 200) { toast.error(res.data.msg); setAllData(null); return; }
                     const goals = res.data.goals ?? [];
 
                     const dateMap: Record<string, any> = {};
@@ -112,7 +112,7 @@ export function HabitChart({ goalId, userId, viewMode, className, onNavigate }: 
                 }
             } catch {
                 toast.error("Failed to load evaluation history.");
-                setAllData([]);
+                setAllData(null);
             } finally {
                 setLoading(false);
             }
@@ -120,7 +120,7 @@ export function HabitChart({ goalId, userId, viewMode, className, onNavigate }: 
     }, [goalId, userId, viewMode]);
 
     useEffect(() => {
-        if (!allData?.chartData) return;
+        if (!allData?.chartData || !allData) return;
         const from = startDate ? new Date(startDate).getTime() : -Infinity;
         const to = endDate ? new Date(endDate + "T23:59:59").getTime() : Infinity;
         const filtered = allData.chartData.filter((p: any) => {

@@ -21,12 +21,13 @@ const statusColor: Record<string, string> = {
 export function AppHome() {
    const [goals, setGoals] = useState<{id:string; name:string; description: string; startDate: string; etaDate: string; status: string}[]>([]);
    const navigate = useNavigate();
+   const userId = localStorage.getItem("userId") ?? "";
+
    useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if(!userId) { toast.error(`Could not load data for user.`); return; }
+    if(!userId) { toast.error("Could not load data for user."); return; }
     getAllGoals(userId)
         .then((res) => setGoals(res.data.goals ?? []))
-        .catch(() => toast.error(`Couldn't load goals`));
+        .catch(() => toast.error("Couldn't load goals"));
    }, [])
 
    const handleStatusChange = async (goalId: string, status: GoalStatus) => {
@@ -46,7 +47,9 @@ export function AppHome() {
                 <Card className="rounded-[0vw] p-[1vw] border border-gray-500">
                     <CardTitle className="text-[3vw] tracking-[-0.1vw]">Main tracker</CardTitle>
                     <CardDescription className="text-[1vw] mt-[-1vw]">This is what growth has been looking like to me since a while now.</CardDescription>
-                    <CardContent><HabitChart /></CardContent>
+                    <CardContent>
+                        <HabitChart userId={userId} onNavigate={(id) => navigate(`/app/${id}`)} />
+                    </CardContent>
                 </Card>
             </div>
             <div className="mt-[2vw] ">

@@ -7,6 +7,9 @@ import path from 'path'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [tailwindcss(), react()],
+  server: {
+    allowedHosts: ["shuttlelike-unbudging-charles.ngrok-free.dev"]
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

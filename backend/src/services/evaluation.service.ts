@@ -2,6 +2,7 @@ import { Tickets } from "../db/models/tickets.model.js";
 import { Task } from "../db/models/tasks.model.js";
 import { Config } from "../db/models/config.models.js";
 import { Goals } from "../db/models/goal.model.js";
+import { Skills } from "../db/models/skills.models.js";
 import { toObjectId } from "../lib/objectIdConverter.js";
 
 export async function evaluateTicket(ticketId: string) {
@@ -70,7 +71,7 @@ export async function evaluateTicket(ticketId: string) {
     ticket.evaluatedAt = new Date();
     await ticket.save();
 
-    return { status: 200, msg: `Ticket evaluated.`, ticket };
+    return { status: 200, msg: "Ticket evaluated.", ticket };
 }
 
 export async function evaluateAllTickets() {
@@ -81,18 +82,61 @@ export async function evaluateAllTickets() {
     return { status: 200, msg: `Evaluated ${tickets.length} tickets.` };
 }
 
-export async function getEvaluationHistory(goalId: string) {
+export async function getEvaluationHistory(goalId: string, includeSkills?: boolean) {
     const tickets = await Tickets.find(
         { goalId: toObjectId(goalId), evaluatedAt: { $ne: null } },
         { _id: 1, name: 1, createdAt: 1, evaluation: 1 }
     ).sort({ createdAt: 1 });
 
-    const history = tickets.map(doc => ({
-        id: doc._id,
-        date: doc.createdAt,
-        overallSlope: doc.evaluation?.overallSlope ?? "-",
-        overallCompletion: doc.evaluation?.overallCompletionPercentage ?? 0,
+    const history = await Promise.all(tickets.map(async (doc) => {
+        const entry: any = {
+            id: doc._id,
+            date: doc.createdAt,
+            overallSlope: doc.evaluation?.overallSlope ?? "-",
+            overallCompletion: doc.evaluation?.overallCompletionPercentage ?? 0,
+        };
+
+        if (includeSkills && doc.evaluation?.skillMetrics) {
+            entry.skillMetrics = await Promise.all(doc.evaluation.skillMetrics.map(async (sm: any) => {
+                const skill = await Skills.findOne({ _id: sm.skillId }, { name: 1 });
+                return {
+                    skillName: skill?.name ?? "Unknown",
+                    totalTasks: sm.totalTasks,
+                    completedTasks: sm.completedTasks,
+                    missedTasks: sm.missedTasks,
+                    completionPercentage: sm.completionPercentage,
+                    slope: sm.slope,
+                };
+            }));
+        }
+
+        return entry;
     }));
 
     return { status: 200, msg: "Evaluation history found.", history };
+}
+
+export async function getAllUserEvaluationHistory(userId: string) {
+    const goals = await Goals.find({ userId: toObjectId(userId) }, { _id: 1, name: 1 });
+
+    const result = [];
+    for (const goal of goals) {
+        const tickets = await Tickets.find(
+            { goalId: goal._id, evaluatedAt: { $ne: null } },
+            { _id: 1, name: 1, createdAt: 1, evaluation: 1 }
+        ).sort({ createdAt: 1 });
+
+        const history = tickets.map(doc => ({
+            date: doc.createdAt,
+            overallCompletion: doc.evaluation?.overallCompletionPercentage ?? 0,
+        }));
+
+        result.push({
+            id: goal._id,
+            name: goal.name,
+            history,
+        });
+    }
+
+    return { status: 200, msg: "All evaluation history found.", goals: result };
 }

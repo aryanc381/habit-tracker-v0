@@ -28,12 +28,16 @@ const STATUSES: Record<string, string> = {
     success: "success",
 };
 
+const tabClass = (active: boolean) =>
+    `px-[0.5vw] py-[0.25vw] text-[0.8vw] cursor-pointer rounded-[0vw] ${active ? "text-white border-b border-white" : "text-[#666] hover:text-white"}`;
+
 export function GoalMain() {
     const { goalId } = useParams();
     const [goalInfo, setGoalInfo] = useState<GoalInfo>();
     const [tickets, setTickets] = useState<Record<string, Ticket[]>>({});
     const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [viewMode, setViewMode] = useState<"overall" | "skills">("overall");
     const navigate = useNavigate();
 
     const fetchTickets = async () => {
@@ -112,7 +116,11 @@ export function GoalMain() {
             
             <div className="mt-[1vw]">
                 <Card className="pr-[2vw] rounded-[0vw] border">
-                    <HabitChart goalId={goalId!} className="h-[30vh]" />
+                    <div className="flex gap-[0.5vw] ml-[1vw] mt-[0.5vw]">
+                        <button onClick={() => setViewMode("overall")} className={tabClass(viewMode === "overall")}>Overall</button>
+                        <button onClick={() => setViewMode("skills")} className={tabClass(viewMode === "skills")}>Per Skill</button>
+                    </div>
+                    <HabitChart goalId={goalId!} viewMode={viewMode} className="h-[30vh]" />
                 </Card>
             </div>
             <div className="mt-[1vw]">

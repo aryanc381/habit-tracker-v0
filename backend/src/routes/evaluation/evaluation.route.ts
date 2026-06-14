@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import zod from 'zod';
-import { evaluateTicket, getEvaluationHistory } from '../../services/evaluation.service.js';
+import { evaluateTicket, evaluateAllTickets, getEvaluationHistory } from '../../services/evaluation.service.js';
 import { zodValidator } from '../../lib/zodValidation.js';
 
 const router: Router = express.Router();
@@ -15,6 +15,15 @@ const goalIdParam = zod.object({
 
 router.get('/health', async (req, res) => {
     res.json({ status: 200, msg: 'Evaluation endpoint is healthy.' });
+});
+
+router.post('/evaluate-all', async (req, res) => {
+    try {
+        const response = await evaluateAllTickets();
+        return res.json(response);
+    } catch {
+        return res.json({ status: 500, msg: 'Internal server error.' });
+    }
 });
 
 router.post('/evaluate/:ticketId', async (req, res) => {

@@ -5,7 +5,6 @@ import { ColorPanels } from "@paper-design/shaders-react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { KineticText } from "@/components/ui/kinetic-text";
 
 const MemoizedColorPanels = React.memo(ColorPanels)
 

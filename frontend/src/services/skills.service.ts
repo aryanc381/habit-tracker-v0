@@ -6,6 +6,10 @@ export interface ISkills {
     level: string
 }
 
+export interface ISkillResponse extends ISkills { 
+    id: string
+}
+
 export const getAllSkills = () => {
     return api.get('/skills/all');
 }

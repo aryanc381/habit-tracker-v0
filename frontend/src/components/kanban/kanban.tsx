@@ -1,9 +1,9 @@
 import * as React from "react"
 import {
   createContext,
-  CSSProperties,
-  HTMLAttributes,
-  ReactNode,
+  type CSSProperties,
+  type HTMLAttributes,
+  type ReactNode,
   useCallback,
   useContext,
   useLayoutEffect,

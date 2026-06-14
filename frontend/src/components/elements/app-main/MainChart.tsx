@@ -79,10 +79,11 @@ export function HabitChart({ goalId, userId, viewMode, className, onNavigate }: 
                             return { date: fmtDate(d), progress: item.overallCompletion ?? 0, rawDate: d };
                         });
                         setAllData({ chartData: points, keys: ["progress"], meta: null });
-                        if (points.length > 0) {
-                            setStartDate(toDateInput(points[0].rawDate));
-                            setEndDate(toDateInput(points[points.length - 1].rawDate));
-                        }
+                        const today = new Date();
+                        const start = new Date(today); start.setDate(today.getDate() - 10);
+                        const end = new Date(today); end.setDate(today.getDate() + 10);
+                        setStartDate(toDateInput(start));
+                        setEndDate(toDateInput(end));
                     }
                 } else if (userId) {
                     const res = await getAllEvaluationHistory(userId);
@@ -105,10 +106,11 @@ export function HabitChart({ goalId, userId, viewMode, className, onNavigate }: 
                     const goalsMap = Object.fromEntries(goals.map((g: any) => [g.name, g.id]));
 
                     setAllData({ chartData, keys: goalNames, meta: goalsMap });
-                    if (chartData.length > 0) {
-                        setStartDate(toDateInput(chartData[0].rawDate));
-                        setEndDate(toDateInput(chartData[chartData.length - 1].rawDate));
-                    }
+                        const today = new Date();
+                        const start = new Date(today); start.setDate(today.getDate() - 10);
+                        const end = new Date(today); end.setDate(today.getDate() + 10);
+                        setStartDate(toDateInput(start));
+                        setEndDate(toDateInput(end));
                 }
             } catch {
                 toast.error("Failed to load evaluation history.");
@@ -166,7 +168,7 @@ export function HabitChart({ goalId, userId, viewMode, className, onNavigate }: 
                 </div>
             )}
             <ChartContainer config={config} className={cn("h-[50vh] w-full", className)}>
-                <LineChart data={filteredData} onClick={(data) => {
+                <LineChart data={filteredData} onClick={(data: any) => {
                     if (data?.activePayload?.[0] && onNavigate && allData.meta) {
                         const key = data.activePayload[0].dataKey as string;
                         const id = allData.meta[key];

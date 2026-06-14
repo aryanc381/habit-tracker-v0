@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import type { DateRange } from "react-day-picker";
 import { getAllSkills, createSkill } from "@/services/skills.service";
-import type { IAllSkills } from "@/services/skills.service";
+import type { ISkillResponse } from "@/services/skills.service";
 import { toast } from "sonner";
 import { createGoal } from "@/services/goal.service";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -21,7 +21,7 @@ const levelChip: Record<string, string> = {
 export function NewGoal({ buttonName }: { buttonName: string }) {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [skills, setSkills] = useState<IAllSkills[]>([]);
+    const [skills, setSkills] = useState<ISkillResponse[]>([]);
     const [skillIds, setSkillIds] = useState<string[]>([]);
     const [range, setRange] = useState<DateRange | undefined>({
         from: new Date(),

@@ -42,12 +42,8 @@ export async function createConfig(input: ICreateConfig) {
 }
 
 export async function updateConfig(input: ICreateConfig) {
-    const existingUser = await User.findOne({ _id: toObjectId(input.id) });
-    if(!existingUser) { return { status: 404, msg: 'No user found to configure thresholds.'} }
-
-    const existingUserId = existingUser._id;
-    const updatedConfigs = await Config.findOneAndUpdate(
-        { userId: existingUserId },
+    const config = await Config.findOneAndUpdate(
+        { _id: toObjectId(input.id) },
         {
             evaluationThresholds: {
                 successThresh: input.successThresh,
@@ -61,8 +57,8 @@ export async function updateConfig(input: ICreateConfig) {
         { new: true }
     );
 
-    if(!updatedConfigs) { return { status: 404, msg: 'No existing configs found for this user.'} }
-    return { status: 200, msg: `Configs updated for ${existingUser.fullName}.`, configuration: updatedConfigs }
+    if(!config) { return { status: 404, msg: 'No config found with this ID.'} }
+    return { status: 200, msg: `Configs updated.`, configuration: config }
 }
 
 export async function getConfigsByUserId(input: IGetConfig) {

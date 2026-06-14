@@ -112,7 +112,7 @@ export function GoalMain() {
             
             <div className="mt-[1vw]">
                 <Card className="pr-[2vw] rounded-[0vw] border">
-                    <HabitChart className="h-[30vh]" />
+                    <HabitChart goalId={goalId!} className="h-[30vh]" />
                 </Card>
             </div>
             <div className="mt-[1vw]">
